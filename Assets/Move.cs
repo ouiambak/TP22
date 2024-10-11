@@ -10,6 +10,9 @@ public class Move : MonoBehaviour
     [SerializeField] private float _maxSpeed = 10f;
     [SerializeField] private float _speed = 0f;
     public float _jumpForce = 5f; // Force du saut
+    private SpriteRenderer _spriteRenderer;
+    private Vector3 _velocity;
+    private bool _isTouching = false;
     // Update is called once per frame
     void Update()
     {
@@ -43,15 +46,27 @@ public class Move : MonoBehaviour
         }
 
         // Vérifie si l'objet est au sol et si la touche Espace est pressée
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)&& _isTouching)
         {
-            _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-  
-            Debug.Log("je saute ");
+             //_rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+             _velocity.y =_jumpForce;
+            _rb.velocity = _velocity;
+             Debug.Log("je saute ");
         }
 
-            // Vérifie quand l'objet touche le sol
+        // Vérifie quand l'objet touche le sol
 
-        }
-    
+    }
+    private void FixedUpdate()
+    {
+        _rb.velocity=_velocity;
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        _isTouching = true;
+    }
+
 }
+
+    
+
