@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,64 +8,72 @@ public class Move : MonoBehaviour
     [SerializeField] private float _acceleration = 5f;
     [SerializeField] private float _maxSpeed = 10f;
     [SerializeField] private float _speed = 0f;
-    public float _jumpForce = 5f; // Force du saut
-    private SpriteRenderer _spriteRenderer;
-    private Vector3 _velocity;
-    private bool _isTouching = false;
-    // Update is called once per frame
+    [SerializeField] private float _jumpForce = 5f; // Force du saut
+    [SerializeField] private Transform groundCheck; // Position pour vÃ©rifier si le personnage est au sol
+    [SerializeField] private LayerMask groundLayer; // Masque de couche pour dÃ©tecter le sol
+
+    private float groundCheckRadius = 0.2f; // Rayon pour vÃ©rifier le sol
+    private bool isGrounded;
+    private Vector2 _velocity;
+
     void Update()
     {
-        // Avancer vers la droite quand on appuie sur la flèche droite
-        if (Input.GetKey(KeyCode.LeftArrow))
+        HandleMovement();
+        CheckGround();
+
+        // Vï¿½rifie si le personnage est au sol et si la touche Espace est pressï¿½e pour sauter
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            _speed += _acceleration * Time.deltaTime;
-            if (_speed >= _maxSpeed)
-            {
-                _speed = _maxSpeed;
-            }
-            _rb.velocity = new Vector2(_speed, _rb.velocity.y);
+            Jump();
         }
-
-        // Avancer vers la gauche quand on appuie sur la flèche gauche
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            _speed -= _acceleration * Time.deltaTime;
-            if (_speed <= -_maxSpeed)
-            {
-                _speed = -_maxSpeed;
-            }
-            _rb.velocity = new Vector2(_speed, _rb.velocity.y);
-        }
-
-        // Si aucune touche n'est pressée, ralentir progressivement
-        if (!Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow))
-        {
-            _speed = Mathf.MoveTowards(_speed, 0, _acceleration * Time.deltaTime);
-            _rb.velocity = new Vector2(_speed, _rb.velocity.y);
-        }
-
-        // Vérifie si l'objet est au sol et si la touche Espace est pressée
-        if (Input.GetKeyDown(KeyCode.Space)&& _isTouching)
-        {
-             //_rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-             _velocity.y =_jumpForce;
-            _rb.velocity = _velocity;
-             Debug.Log("je saute ");
-        }
-
-        // Vérifie quand l'objet touche le sol
-
     }
+
     private void FixedUpdate()
     {
-        _rb.velocity=_velocity;
+        // Appliquer le mouvement calculÃ© au Rigidbody2D
+        _rb.velocity = new Vector2(_speed, _rb.velocity.y);
     }
-    private void OnCollisionStay2D(Collision2D collision)
+
+    private void HandleMovement()
     {
-        _isTouching = true;
+        // Mouvement vers la droite
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            _speed += _acceleration * Time.deltaTime;
+            _speed = Mathf.Clamp(_speed, 0, _maxSpeed); // Limiter la vitesse maximale
+        }
+        // Mouvement vers la gauche
+        else if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            _speed -= _acceleration * Time.deltaTime;
+            _speed = Mathf.Clamp(_speed, -_maxSpeed, 0); // Limiter la vitesse maximale
+        }
+        else
+        {
+            // Ralentir progressivement si aucune touche n'est pressÃ©e
+            _speed = Mathf.MoveTowards(_speed, 0, _acceleration * Time.deltaTime);
+        }
     }
 
+    private void Jump()
+    {
+        _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
+        Debug.Log("je saute");
+    }
+
+    private void CheckGround()
+    {
+        // VÃ©rifier si le personnage est au sol en utilisant un cercle
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // Visualiser le point de dÃ©tection au sol dans l'Ã©diteur Unity
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+    }
 }
-
-    
-
