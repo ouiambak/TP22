@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _jumpForce = 5f; // Force du saut
     [SerializeField] private Transform groundCheck; // Position pour vérifier si le personnage est au sol
     [SerializeField] private LayerMask groundLayer; // Masque de couche pour détecter le sol
+    [SerializeField] private Animator animator; // Référence à l'Animator
 
     private float groundCheckRadius = 3f; // Rayon pour vérifier le sol
     private bool isGrounded;
@@ -25,6 +26,9 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        // Mise à jour de l'animation en fonction de l'état du personnage
+        UpdateAnimation();
     }
 
     void FixedUpdate()
@@ -34,14 +38,7 @@ public class PlayerController : MonoBehaviour
 
         // Création d'un Raycast pour détecter le sol
         RaycastHit2D hitGround = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckRadius, groundLayer);
-        if (hitGround.collider != null)
-        {
-            isGrounded = true; // Le personnage est au sol
-        }
-        else
-        {
-            isGrounded = false; // Le personnage n'est pas au sol
-        }
+        isGrounded = hitGround.collider != null;
 
         // Visualiser le Raycast dans l'éditeur Unity (facultatif pour le débogage)
         Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckRadius, Color.red);
@@ -72,6 +69,13 @@ public class PlayerController : MonoBehaviour
     {
         _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
         Debug.Log("Je saute");
+    }
+
+    private void UpdateAnimation()
+    {
+        // Si la vitesse absolue est inférieure ou égale à une petite valeur, on considère que le personnage est en Idle
+        bool isIdle = Mathf.Abs(_speed) == 0f;
+        animator.SetBool("isIdle", isIdle);
     }
 
     private void CheckGround()

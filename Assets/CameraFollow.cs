@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private Transform target; // L'objet que la caméra doit suivre
-    private Vector3 offset= new Vector3(-1,-5,-25); // Décalage de la caméra par rapport à l'objet suivi
+    private Vector3 offset= new Vector3(1,1,-20); // Décalage de la caméra par rapport à l'objet suivi
     [SerializeField] private float smoothSpeed = 0.125f; // Vitesse de suivi
 
     void LateUpdate()
