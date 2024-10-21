@@ -1,24 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform target; // L'objet que la caméra doit suivre
-    private Vector3 offset= new Vector3(1,1,-30); // Décalage de la caméra par rapport à l'objet suivi
-    [SerializeField] private float smoothSpeed = 0.125f; // Vitesse de suivi
+    [SerializeField] private Transform target; // L'objet à suivre
+    [SerializeField] private Vector3 offset; // Décalage de la caméra par rapport à l'objet suivi
+    [SerializeField] private float smoothSpeed = 0.125f; // Vitesse de lissage du mouvement de la caméra
 
-    void LateUpdate()
+    // Limites de la caméra (à ajuster selon votre jeu)
+    [SerializeField] private float minX = -4f; // Limite gauche
+    [SerializeField] private float maxX = 2.5f;  // Limite droite
+    [SerializeField] private float minY = -5f;  // Limite inférieure
+    [SerializeField] private float maxY = 5f;   // Limite supérieure
+
+    private void Start()
     {
-        // Calculer la position souhaitée de la caméra avec un décalage
-        Vector3 desiredPosition = target.position + offset;
+        // Initialiser le décalage selon la position de la caméra
+        offset = new Vector3(10, 10, -30); // Ajustez ceci pour placer la caméra dans le coin souhaité
+    }
 
-        // Lisser le mouvement de la caméra pour éviter des mouvements brusques
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+    private void LateUpdate()
+    {
+        // Vérifier que la cible est assignée
+        if (target != null)
+        {
+            // Calculer la position désirée
+            Vector3 desiredPosition = target.position + offset;
 
-        // Appliquer la nouvelle position à la caméra
-        transform.position = smoothedPosition;
+            // Limiter la position de la caméra à l'intérieur des limites définies
+            desiredPosition.x = Mathf.Clamp(desiredPosition.x, minX, maxX);
+            desiredPosition.y = Mathf.Clamp(desiredPosition.y, minY, maxY);
+
+            // Interpoler entre la position actuelle de la caméra et la position désirée pour un mouvement lisse
+            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+
+            // Mettre à jour la position de la caméra
+            transform.position = smoothedPosition;
+        }
     }
 }
-
-
