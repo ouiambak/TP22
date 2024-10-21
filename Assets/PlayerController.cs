@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,20 +14,20 @@ public class PlayerController : MonoBehaviour
 
     private float groundCheckRadius = 3f; // Rayon pour vérifier le sol
     private bool isGrounded;
-    
+    private bool isJumping = false; 
+
     void Update()
     {
         HandleMovement();
-        CheckGround();
 
         // Vérifie si le personnage est au sol et si la touche Espace est pressée pour sauter
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
-        {
+        if (isGrounded && !isJumping && Input.GetKeyDown(KeyCode.Space))
+        {   
             Jump();
         }
 
         // Mise à jour de l'animation en fonction de l'état du personnage
-        UpdateAnimation();
+        animator.SetBool("isJumping", isJumping);
     }
 
     void FixedUpdate()
@@ -67,20 +66,20 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
+        isJumping = true; // Définir le paramètre de saut comme vrai
         _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
+        StartCoroutine(WaitForJumpToEnd());
         Debug.Log("Je saute");
     }
 
-    private void UpdateAnimation()
+    private IEnumerator WaitForJumpToEnd()
     {
-        // Si la vitesse absolue est inférieure ou égale à une petite valeur, on considère que le personnage est en Idle
-        bool isIdle = Mathf.Abs(_speed) == 0f;
-        animator.SetBool("isIdle", isIdle);
-    }
-
-    private void CheckGround()
-    {
-        // Cette fonction est remplacée par l'utilisation du Raycast dans FixedUpdate pour détecter le sol.
+        // Attendre que l'animation de saut se termine avant de permettre un autre saut
+        while (animator.GetCurrentAnimatorStateInfo(0).IsName("idle_jump"))
+        {
+            yield return null; // Attendre la fin de l'animation de saut
+        }
+        isJumping = false; // Le saut est terminé, permettre un autre saut
     }
 
     private void OnDrawGizmosSelected()
