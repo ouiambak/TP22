@@ -3,7 +3,7 @@ using UnityEngine;
 public class detecter : MonoBehaviour
 {
     [SerializeField] private LayerMask _Layer;
-    public float rotationSpeed = 50f;
+    public float _rotationSpeed = 50f;
     // Update is called once per frame
     void Update()
     {
@@ -25,6 +25,6 @@ public class detecter : MonoBehaviour
             Debug.Log(hit.point);
             Debug.Log(hit.collider.name);
         }
-        transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
+        transform.Rotate(0, _rotationSpeed * Time.deltaTime, 0);
     }
 }

@@ -106,4 +106,9 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawWireSphere(_groundCheck.position, _groundCheckRadius);
         }
     }
+    public void IncreaseJumpForce(float amount)
+    {
+        _jumpForce += amount; // Augmenter la force de saut
+        Debug.Log("Jump force increased: " + _jumpForce);
+    }
 }

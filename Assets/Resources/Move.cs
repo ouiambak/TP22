@@ -9,11 +9,11 @@ public class Move : MonoBehaviour
     [SerializeField] private float _maxSpeed = 10f;
     [SerializeField] private float _speed = 0f;
     [SerializeField] private float _jumpForce = 5f; // Force du saut
-    [SerializeField] private Transform groundCheck; // Position pour vérifier si le personnage est au sol
-    [SerializeField] private LayerMask groundLayer; // Masque de couche pour détecter le sol
+    [SerializeField] private Transform _groundCheck; // Position pour vérifier si le personnage est au sol
+    [SerializeField] private LayerMask _groundLayer; // Masque de couche pour détecter le sol
 
-    private float groundCheckRadius = 0.2f; // Rayon pour vérifier le sol
-    private bool isGrounded;
+    private float _groundCheckRadius = 0.2f; // Rayon pour vérifier le sol
+    private bool _isGrounded;
     private Vector2 _velocity;
 
     void Update()
@@ -22,7 +22,7 @@ public class Move : MonoBehaviour
         CheckGround();
 
         // V�rifie si le personnage est au sol et si la touche Espace est press�e pour sauter
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (_isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
@@ -64,16 +64,16 @@ public class Move : MonoBehaviour
     private void CheckGround()
     {
         // Vérifier si le personnage est au sol en utilisant un cercle
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, _groundCheckRadius, _groundLayer);
     }
 
     private void OnDrawGizmosSelected()
     {
         // Visualiser le point de détection au sol dans l'éditeur Unity
-        if (groundCheck != null)
+        if (_groundCheck != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            Gizmos.DrawWireSphere(_groundCheck.position, _groundCheckRadius);
         }
     }
 }
