@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,11 +12,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _groundCheck; // Position pour vérifier si le personnage est au sol
     [SerializeField] private LayerMask _groundLayer; // Masque de couche pour détecter le sol
     [SerializeField] private Animator _animator; // Référence à l'Animator
-
     private float _groundCheckRadius = 3f; // Rayon pour vérifier le sol
-    private bool _isGrounded;
-    private bool _isJumping = false;
-    private bool _isWalking = false;
+    private bool _isGrounded;// Variable pour vérifier si le héros sur le sol
+    private bool _isJumping = false;// Variable pour vérifier si le héros  saute 
+    private bool _isWalking = false;// Variable pour vérifier si le héros marche
+    private bool isImmune = false;    // Variable pour vérifier si le héros est immunisé contre le feu
+
 
     private float _rotationSpeed = 5f; // Vitesse de rotation
     private float _angle = 0f; // Angle de rotation
@@ -44,7 +46,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hitGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckRadius, _groundLayer);
         _isGrounded = hitGround.collider != null;
 
-        
+
         // Visualiser le Raycast dans l'éditeur Unity (facultatif pour le débogage)
         Debug.DrawRay(_groundCheck.position, Vector2.down * _groundCheckRadius, Color.red);
     }
@@ -72,12 +74,12 @@ public class PlayerController : MonoBehaviour
         {
             // Ralentir progressivement si aucune touche n'est pressée
             _speed = Mathf.MoveTowards(_speed, 0, _acceleration * Time.deltaTime);
-           
-        
+
+
         }
     }
 
-   
+
 
     private void Jump()
     {
@@ -110,5 +112,28 @@ public class PlayerController : MonoBehaviour
     {
         _jumpForce += amount; // Augmenter la force de saut
         Debug.Log("Jump force increased: " + _jumpForce);
+    }
+    // Méthode appelée lors de la collision
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Vérifie si le nom de l'objet avec lequel on entre en collision est "Feu"
+        if (collision.gameObject.GetComponent<FireOn>() != null && !isImmune)
+        {
+            // Appeler la fonction Game Over
+            GameOver();
+        }
+    }
+
+    // Fonction Game Over
+    void GameOver()
+    {
+        Debug.Log("Game Over!");
+        // Redémarrer la scène actuelle
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    // Fonction pour activer ou désactiver l'immunité
+    public void SetImmunity(bool immunityStatus)
+    {
+        isImmune = immunityStatus;  // Change le statut d'immunité
     }
 }
