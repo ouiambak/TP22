@@ -1,16 +1,16 @@
-/*using UnityEngine;
-using UnityEngine.UI; // Pour utiliser UI
+using UnityEngine;
+using UnityEngine.UI; 
 using UnityEngine.SceneManagement;
-
+using TMPro;
 public class PlayerNameInput : MonoBehaviour
 {
-    public TMP_InputField nameInputField; // Référence à l'InputField pour le nom
-    public ScoreManager scoreManager;
+    [SerializeField] private TMP_InputField _nameInputField; 
+    [SerializeField] private ScoreManager _scoreManager;
 
     public void OnSubmit()
     {
-        string playerName = nameInputField.text;
-        scoreManager.SaveScore(playerName); // Sauvegarder le score et le nom du joueur
-        SceneManager.LoadScene("Game_Stage 1"); // Changer "GameScene" par le nom de votre scène de jeu
+        string playerName = _nameInputField.text;
+        _scoreManager.SaveScore(playerName);
+        SceneManager.LoadScene("Game_Stage 1");
     }
-}*/
+}

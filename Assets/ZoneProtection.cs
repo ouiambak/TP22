@@ -8,10 +8,10 @@ public class ZoneProtection : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Récupère le script du héros et active l'immunité
-            PlayerController hero = other.GetComponent<PlayerController>();
-            if (hero != null)
+            PlayerController _hero = other.GetComponent<PlayerController>();
+            if (_hero != null)
             {
-                hero.SetImmunity(true);  // Activer l'immunité
+                _hero.SetImmunity(true);  // Activer l'immunité
                 Debug.Log("Le héros est immunisé contre le feu.");
             }
         }

@@ -5,7 +5,7 @@ public class Collectible : MonoBehaviour
     [SerializeField] private int _points = 1; // Points que cet objet rapporte
     [SerializeField] private CollectibleType _collectibleType; // Type de l'objet ramassable
     [SerializeField] private float _jumpForceIncrease = 0f; // Augmentation de la force de saut
-
+    [SerializeField] ScoreManager _scoreManager;
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Vérifier si l'objet qui entre en collision a le tag "Player"
@@ -22,7 +22,7 @@ public class Collectible : MonoBehaviour
             ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
             if (scoreManager != null)
             {
-                scoreManager.AddCollectible(this); // Passer l'objet ramassé au ScoreManager
+                scoreManager.AddScore(this); // Passer l'objet ramassé au ScoreManager
             }
 
             // Détruire le collectible après qu'il ait été ramassé

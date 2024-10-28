@@ -3,23 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FireOn : MonoBehaviour
+public class NextStage : MonoBehaviour
 {
-   
-    [SerializeField] private string gameOverSceneName = "GameOver";
+  
+    [SerializeField] private string nextSceneName;
 
-    
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
+       
         if (collision.gameObject.CompareTag("Player"))
         {
             
-            SceneManager.LoadScene(gameOverSceneName);
+            SceneManager.LoadScene(nextSceneName);
         }
+
+
     }
 }
-
-
-
 

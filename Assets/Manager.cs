@@ -1,12 +1,13 @@
-/*using UnityEngine;
+using UnityEngine;
 using TMPro; // Si vous utilisez TextMeshPro pour afficher le nom
 
 public class Manager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI playerNameText; // UI pour afficher le nom du joueur (facultatif)
-
+    [SerializeField] private TextMeshProUGUI _playerNameText; // UI pour afficher le nom du joueur (facultatif)
+    
+    
     void Start()
-    {
+    {   
         // Récupérer le nom du joueur à partir des PlayerPrefs
         string playerName = PlayerPrefs.GetString("PlayerName", "Joueur inconnu");
 
@@ -14,10 +15,9 @@ public class Manager : MonoBehaviour
         Debug.Log("Nom du joueur : " + playerName);
 
         // Optionnel : Afficher le nom du joueur dans l'UI
-        if (playerNameText != null)
+        if (_playerNameText != null)
         {
-            playerNameText.text = "Nom : " + playerName;
+            _playerNameText.text = "Nom : " + playerName;
         }
     }
 }
-*/
