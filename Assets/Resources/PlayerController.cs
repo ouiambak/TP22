@@ -112,20 +112,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Jump force increased: " + _jumpForce);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.GetComponent<FireOn>() != null && !isImmune)
-        {
-            GameOver();
-        }
-    }
-
-    void GameOver()
-    {
-        Debug.Log("Game Over!");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
+   
     public void SetImmunity(bool immunityStatus)
     {
         isImmune = immunityStatus;

@@ -33,7 +33,7 @@ public class Collectible : MonoBehaviour
             }
 
             
-            Destroy(gameObject, _audioSource.clip.length); 
+            Destroy(gameObject); 
         }
     }
 
