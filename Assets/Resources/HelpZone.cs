@@ -3,8 +3,9 @@ using UnityEngine;
 public class HelpZone : MonoBehaviour
 {
     [SerializeField] private Color _protectionColor = Color.red; 
-    [SerializeField] private float _protectionDuration = 3f; 
-
+    [SerializeField] private float _protectionDuration = 3f;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _powerSound;
     private Color _originalColor;
     private bool _isProtected = false; 
     private SpriteRenderer _playerRenderer; 
@@ -21,8 +22,7 @@ public class HelpZone : MonoBehaviour
             {
                 
                 _originalColor = _playerRenderer.color;
-
-               
+                _audioSource.PlayOneShot(_powerSound);
                 _playerRenderer.color = _protectionColor;
             }
 

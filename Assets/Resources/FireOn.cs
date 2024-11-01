@@ -6,6 +6,8 @@ public class FireOn : MonoBehaviour
 {
     [SerializeField] private string _gameOverSceneName;
     [SerializeField] private Animator _playerAnimator;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _fireSound;
 
     private bool _isGameOver = false;
 
@@ -18,6 +20,7 @@ public class FireOn : MonoBehaviour
             if (_playerAnimator != null)
             {
                 _playerAnimator.SetBool("is_die", true);
+                _audioSource.PlayOneShot(_fireSound);
             }
 
             StartCoroutine(GameOverAfterDelay(1f));
