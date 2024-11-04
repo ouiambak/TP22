@@ -4067,7 +4067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scoreText: {fileID: 1647202288}
-  _isFirstScene: 1
+  _isFirstScene: 0
 --- !u!1 &1665720606
 GameObject:
   m_ObjectHideFlags: 0

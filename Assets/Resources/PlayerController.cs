@@ -12,10 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private Animator _animator;
-
-    // Variables pour les sons
-    [SerializeField] private AudioSource _audioSource; // Source audio
-    [SerializeField] private AudioClip _jumpSound; // Son de saut
+    [SerializeField] private AudioSource _audioSource; 
+    [SerializeField] private AudioClip _jumpSound; 
 
     private float _groundCheckRadius = 3f;
     private bool _isGrounded;

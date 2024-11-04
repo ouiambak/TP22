@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // Si vous utilisez TextMeshPro pour afficher le nom
+using TMPro; 
 
 public class Manager : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public class Manager : MonoBehaviour
     void Start()
     {   
         
-        string playerName = PlayerPrefs.GetString("PlayerName", "Joueur inconnu");
+        string playerName = PlayerPrefs.GetString("currentPlayer", "Joueur inconnu");
 
         
         Debug.Log("Nom du joueur : " + playerName);
